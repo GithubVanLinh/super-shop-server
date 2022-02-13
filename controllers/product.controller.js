@@ -17,13 +17,33 @@ const { ProductService } = require("../services");
 
 // ===================== A product Area =====================
 // get a product by id
-module.exports.getProductByProductId = (req, res, next) => {
+module.exports.getProductByProductId = async (req, res, next) => {
   // get a product by id
   const productId = req.params.id;
-  const product = productList.find((product) => product.id === productId);
 
-  // return json
-  res.status(200).json(productList);
+  try {
+    // check if productId exist
+    if (!productId) {
+      throw new Error("Product Id is not exist");
+    }
+
+    // find a product by id
+    const product = await ProductService.getById(productId);
+
+    if (!product) {
+      throw new Error("Product is not exist");
+    }
+
+    // increase count view
+    product.increaseCountView();
+
+    // return json
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
 };
 
 // get product list by name
@@ -130,9 +150,11 @@ module.exports.updateProduct = (req, res, next) => {
 // ====================== All product area ======================
 
 // Get all product
-module.exports.getAllProduct = (req, res, next) => {
+module.exports.getAllProduct = async (req, res, next) => {
   // product list
   const query = req.query;
+
+  const productList = await ProductService.getAll();
 
   if (query.name) {
     // return json

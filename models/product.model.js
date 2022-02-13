@@ -125,5 +125,20 @@ const Product = mongoose.model("Product", ProductSchema);
 //   return discountPrice;
 // };
 
+// increase count view
+Product.prototype.increaseCountView = async function () {
+  try {
+    this.count_view += 1;
+    console.log(
+      "models/product.model.js",
+      "Increase Count View",
+      this.count_view
+    );
+    await this.save();
+  } catch (err) {
+    throw err;
+  }
+};
+
 // export model
 module.exports = Product;

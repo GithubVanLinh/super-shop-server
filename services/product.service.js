@@ -1,5 +1,5 @@
 // import model from "./index";
-const { Product } = require("../models");
+const Product = require("../models/product.model");
 
 // create product
 module.exports.create = async (productData) => {
@@ -17,6 +17,11 @@ module.exports.create = async (productData) => {
 };
 
 // get product by id
+/**
+ * Get Product by Proudct ID
+ * @param {string} id productId
+ * @returns {Promise<Product>} product
+ */
 exports.getById = async (id) => {
   try {
     const product = await Product.findById(id);
@@ -80,6 +85,20 @@ exports.getAll = async (req, res) => {
     const products = await Product.find();
 
     return products;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// increase count view
+exports.increaseCountView = async (id) => {
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    product.count_view += 1;
+    await product.save();
   } catch (err) {
     throw err;
   }

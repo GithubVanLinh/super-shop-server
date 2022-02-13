@@ -2,6 +2,14 @@ const UserModel = require("../models/user.model");
 const CartModel = require("../models/cart.model");
 
 // add a product to cart
+/**
+ * Add product to cart of logged user
+ * @param {object} productInfo productId, prodcutQuantity
+ * @param {string} productInfo.productId product Id
+ * @param {number} productInfo.productQuantity quantity of product
+ * @param {string} userId userId
+ * @returns {Promise<Product>} cart
+ */
 exports.addProductToCart = async ({ productId, product_quantity }, userId) => {
   try {
     // get user id from req

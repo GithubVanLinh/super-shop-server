@@ -1,3 +1,4 @@
+const { addProductToCart } = require("../services/cart.service");
 const UserService = require("../services/user.service");
 
 // add to cart
@@ -12,9 +13,9 @@ exports.addProductToCart = async (req, res, next) => {
   // get product id from params or body
   const productId = req.body.product_id || req.params.id;
 
+  addProductToCart();
   // get product quantity from body
   const productQuantity = +req.body.product_quantity || 1;
-
   // add product to cart
   try {
     const user = await UserService.getByEmail(req.user.email);
